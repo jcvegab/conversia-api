@@ -1,0 +1,48 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type User {
+  id: uuid!
+  fullName: String!
+  email: String!
+  password: String!
+  imageUrl: String
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+"""UUID parser"""
+scalar uuid
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Query {
+  users: [User!]!
+  user(id: String!): User!
+}
+
+type Mutation {
+  createUser(createUserInput: CreateUserInput!): User!
+  updateUser(updateUserInput: UpdateUserInput!): User!
+  removeUser(id: String!): User!
+}
+
+input CreateUserInput {
+  id: uuid
+  fullName: String!
+  email: String!
+  password: String!
+  imageUrl: String
+}
+
+input UpdateUserInput {
+  id: uuid
+  fullName: String
+  email: String
+  password: String
+  imageUrl: String
+}

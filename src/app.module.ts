@@ -5,7 +5,11 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 
 import { join } from 'path';
 
-import { PrismaService } from './prisma/prisma.service';
+import { AuthModule } from './auth/auth.module';
+import { UsersModule } from './users/users.module';
+import { PrismaModule } from './prisma/prisma.module';
+
+import { UuidScalar } from './scalar/uuid';
 
 @Module({
   imports: [
@@ -13,8 +17,12 @@ import { PrismaService } from './prisma/prisma.service';
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+      cache: 'bounded',
+      resolvers: { uuid: UuidScalar },
     }),
+    PrismaModule,
+    AuthModule,
+    UsersModule,
   ],
-  providers: [PrismaService],
 })
 export class AppModule {}
