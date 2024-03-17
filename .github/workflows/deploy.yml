@@ -23,6 +23,9 @@ jobs:
           node-version: 20
           cache: 'npm'
 
+      - name: Generate YAML
+        run: echo "${{ secrets.GCP_AE_YAML }}" > app.yaml
+
       - id: 'auth'
         uses: 'google-github-actions/auth@v1'
         with:
