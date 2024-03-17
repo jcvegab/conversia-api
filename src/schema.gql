@@ -30,7 +30,7 @@ type RefreshResponse {
 }
 
 type Query {
-  users: [User!]!
+  users(limit: Int, offset: Int): [User!]!
   user(id: String!): User!
 }
 

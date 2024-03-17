@@ -6,6 +6,8 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
 
+import { FindAllArgs } from './dto/find-all.input';
+
 @Injectable()
 export class UsersService {
   constructor(readonly prismaService: PrismaService) {}
@@ -17,8 +19,13 @@ export class UsersService {
     });
   }
 
-  findAll() {
-    return this.prismaService.user.findMany();
+  findAll({ limit, offset }: FindAllArgs) {
+    return this.prismaService.user.findMany({
+      take: limit,
+      skip: offset,
+      // TODO: Order by - { [keyof User]: 'asc' | 'desc' }
+      orderBy: { createdAt: 'asc' },
+    });
   }
 
   findOne(id: string) {

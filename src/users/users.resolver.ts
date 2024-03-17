@@ -8,6 +8,7 @@ import { User } from './entities/user.entity';
 
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
+import { FindAllArgs } from './dto/find-all.input';
 
 @Resolver(() => User)
 @UseGuards(JwtAuthGuard)
@@ -20,8 +21,8 @@ export class UsersResolver {
   }
 
   @Query(() => [User], { name: 'users' })
-  findAll() {
-    return this.usersService.findAll();
+  findAll(@Args() args: FindAllArgs) {
+    return this.usersService.findAll(args);
   }
 
   @Query(() => User, { name: 'user' })
