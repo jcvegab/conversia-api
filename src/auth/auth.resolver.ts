@@ -4,17 +4,19 @@ import { Args, Context, Mutation, Resolver } from '@nestjs/graphql';
 import { GqlAuthGuard } from './guards/gql-auth.guard';
 import { AuthService } from './auth.service';
 
-import { LoginResponse } from './dto/login-response';
 import { LoginUserInput } from './dto/login-user';
+import { LoginResponse } from './dto/login-response';
+import { RefreshUserInput } from './dto/refresh-user';
+import { RefreshResponse } from './dto/refresh-response';
 
-import { User } from 'src/users/entities/user.entity';
 import { CreateUserInput } from 'src/users/dto/create-user.input';
+import { GqlAuthRefreshGuard } from './guards/gql-refresh-auth.guard';
 
 @Resolver()
-@UseGuards(GqlAuthGuard)
 export class AuthResolver {
   constructor(private authService: AuthService) {}
 
+  @UseGuards(GqlAuthGuard)
   @Mutation(() => LoginResponse)
   login(
     @Args('loginUserInput') loginUserInput: LoginUserInput,
@@ -23,18 +25,17 @@ export class AuthResolver {
     return this.authService.login(context.user);
   }
 
-  // @Mutation(() => User)
-  // refresh(@Args('signupUserInput') signupUserInput: CreateUserInput) {
-  //   return this.authService.signup(signupUserInput);
-  // }
-
-  @Mutation(() => User)
+  @Mutation(() => LoginResponse)
   signup(@Args('signupUserInput') signupUserInput: CreateUserInput) {
     return this.authService.signup(signupUserInput);
   }
 
-  // @Mutation(() => User)
-  // logout(@Context() context) {
-  //   // return this.authService.logout(context.req);
-  // }
+  @UseGuards(GqlAuthRefreshGuard)
+  @Mutation(() => RefreshResponse)
+  refresh(
+    @Args('refreshUserInput') refreshUserInput: RefreshUserInput,
+    @Context() context,
+  ) {
+    return this.authService.refresh(context.body.refresh);
+  }
 }

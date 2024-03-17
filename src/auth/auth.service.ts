@@ -7,6 +7,9 @@ import { JwtService } from '@nestjs/jwt';
 import { UsersService } from 'src/users/users.service';
 
 import { CreateUserInput } from 'src/users/dto/create-user.input';
+import { generateJwtPayload, generateJwtRefreshPayload } from './utils';
+
+import { JwtPayload } from './types';
 
 @Injectable()
 export class AuthService {
@@ -28,30 +31,22 @@ export class AuthService {
   }
 
   async login(user: User) {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { password, ...restUser } = user;
-    return {
-      token: this.jwtService.sign({ email: user.email, sub: user.id }),
-      user: restUser,
-    };
+    return generateJwtPayload(user, this.jwtService);
   }
 
   async signup(signupUserInput: CreateUserInput) {
     const user = await this.usersService.finOneByEmail(signupUserInput.email);
     if (user) throw new Error('User already exists');
     const createdUser = await this.usersService.create(signupUserInput);
-    delete createdUser.password;
-
-    return {
-      token: this.jwtService.sign({
-        email: createdUser.email,
-        sub: createdUser.id,
-      }),
-      user: createdUser,
-    };
+    return generateJwtPayload(createdUser, this.jwtService);
   }
 
-  // async refresh() {}
-
-  // async logout() {}
+  async refresh(token: string) {
+    const decoded = this.jwtService.verify<JwtPayload>(token);
+    // TOCHECK: jti
+    return generateJwtRefreshPayload(
+      { email: decoded.email, sub: decoded.sub },
+      this.jwtService,
+    );
+  }
 }
