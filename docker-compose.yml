@@ -1,14 +1,31 @@
 version: '3.8'
 services:
-  postgres:
+  pg_db:
     image: postgres:15.6
     restart: always
     environment:
       - POSTGRES_USER=jcvegab
       - POSTGRES_PASSWORD=random_password
     volumes:
-      - postgres:/var/lib/postgresql/data
+      - pgdata:/var/lib/postgresql/data
     ports:
       - '5432:5432'
+  users_api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: 'npm run prisma:prepare'
+    container_name: conversia-api
+    ports:
+      - '5000:5000'
+    environment:
+      - PORT=5000
+      - DATABASE_URL=postgresql://jcvegab:random_password@pg_db:5432/postgres?schema=public
+      - PASSWORD_SALT=s0/\/\P4$$w0rD
+      - JWT_SECRET_KEY=4822331372cb63ad27cd07bf1fa209affb1357620710672a1afcf52a63dcfe28
+    depends_on:
+      - pg_db
+    volumes:
+      - ./src:/app/src
 volumes:
-  postgres:
+  pgdata:

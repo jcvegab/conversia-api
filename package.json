@@ -11,14 +11,17 @@
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
-    "start:prod": "node dist/main",
+    "start:prod": "node dist/src/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "seed": "ts-node prisma/seed.ts"
+    "prisma:seed:dev": "ts-node prisma/seed.ts",
+    "prisma:seed:prod": "node dist/prisma/seed.js",
+    "prisma:push": "npx prisma db push",
+    "prisma:prepare": "npm run prisma:push && npm run prisma:seed:prod && npm run start:prod"
   },
   "dependencies": {
     "@apollo/server": "^4.10.1",
