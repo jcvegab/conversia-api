@@ -11,6 +11,7 @@ jobs:
       group: ${{ github.ref }}
       cancel-in-progress: true
     runs-on: ubuntu-latest
+    environment: production
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -24,12 +25,12 @@ jobs:
           cache: 'npm'
 
       - name: Generate YAML
-        run: echo "${{ secrets.GCP_AE_YAML }}" > app.yaml
+        run: echo "${{ env.GCP_AE_YAML }}" > app.yaml
 
       - id: 'auth'
         uses: 'google-github-actions/auth@v1'
         with:
-          credentials_json: ${{ secrets.GCP_SA }}
+          credentials_json: ${{ env.GCP_SA }}
 
       - id: 'deploy'
         uses: 'google-github-actions/deploy-appengine@v1'
