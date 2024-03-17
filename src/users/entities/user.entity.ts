@@ -5,7 +5,7 @@ import { ObjectType, Field } from '@nestjs/graphql';
 import { UuidScalar } from 'src/scalar/uuid';
 
 @ObjectType()
-export class User implements UserI {
+export class User implements Omit<UserI, 'password'> {
   @Field(() => UuidScalar)
   id: string;
 
@@ -14,9 +14,6 @@ export class User implements UserI {
 
   @Field()
   email: string;
-
-  @Field()
-  password: string;
 
   @Field({ nullable: true })
   imageUrl: string | null;
