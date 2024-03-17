@@ -1,10 +1,7 @@
-import { InputType, Field, PartialType } from '@nestjs/graphql';
-
-import { UuidScalar } from 'src/scalar/uuid';
+import { InputType, OmitType, PartialType } from '@nestjs/graphql';
 
 import { CreateUserInput } from './create-user.input';
 @InputType()
-export class UpdateUserInput extends PartialType(CreateUserInput) {
-  @Field(() => UuidScalar, { nullable: true })
-  id: string;
-}
+export class UpdateUserInput extends PartialType(
+  OmitType(CreateUserInput, ['id']),
+) {}

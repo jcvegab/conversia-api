@@ -18,9 +18,9 @@ export class User implements Omit<UserI, 'password'> {
   @Field({ nullable: true })
   imageUrl: string | null;
 
-  @Field({ nullable: true })
+  @Field()
   createdAt: Date;
 
-  @Field({ nullable: true })
+  @Field()
   updatedAt: Date;
 }

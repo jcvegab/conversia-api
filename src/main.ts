@@ -1,4 +1,5 @@
 import { NestFactory } from '@nestjs/core';
+import { ValidationPipe } from '@nestjs/common';
 import {
   FastifyAdapter,
   NestFastifyApplication,
@@ -13,6 +14,7 @@ async function bootstrap() {
   );
 
   app.enableCors();
+  app.useGlobalPipes(new ValidationPipe());
 
   await app.listen(process.env.PORT || 3000);
 }

@@ -1,12 +1,9 @@
-import { Field, InputType } from '@nestjs/graphql';
+import { InputType, PickType } from '@nestjs/graphql';
 
-import { User } from '@prisma/client';
+import { CreateUserInput } from 'src/users/dto/create-user.input';
 
 @InputType()
-export class LoginUserInput implements Pick<User, 'email' | 'password'> {
-  @Field()
-  email: string;
-
-  @Field()
-  password: string;
-}
+export class LoginUserInput extends PickType(CreateUserInput, [
+  'email',
+  'password',
+] as const) {}

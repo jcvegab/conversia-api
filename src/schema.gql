@@ -7,8 +7,8 @@ type User {
   fullName: String!
   email: String!
   imageUrl: String
-  createdAt: DateTime
-  updatedAt: DateTime
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 """UUID parser"""
@@ -39,7 +39,7 @@ type Mutation {
   signup(signupUserInput: CreateUserInput!): LoginResponse!
   refresh(refreshUserInput: RefreshUserInput!): RefreshResponse!
   createUser(createUserInput: CreateUserInput!): User!
-  updateUser(updateUserInput: UpdateUserInput!): User!
+  updateUser(id: String!, updateUserInput: UpdateUserInput!): User!
   removeUser(id: String!): User!
 }
 
@@ -61,7 +61,6 @@ input RefreshUserInput {
 }
 
 input UpdateUserInput {
-  id: uuid
   fullName: String
   email: String
   password: String
