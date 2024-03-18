@@ -17,12 +17,12 @@ services:
     command: 'npm run prisma:prepare'
     container_name: conversia-api
     ports:
-      - '5000:5000'
+      - '5000:8080'
     environment:
-      - PORT=5000
+      - PORT=${PORT}
       - DATABASE_URL=postgresql://jcvegab:random_password@pg_db:5432/postgres?schema=public
-      - PASSWORD_SALT=s0/\/\P4$$w0rD
-      - JWT_SECRET_KEY=4822331372cb63ad27cd07bf1fa209affb1357620710672a1afcf52a63dcfe28
+      - PASSWORD_SALT=${PASSWORD_SALT}
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY}
     depends_on:
       - pg_db
     volumes:
