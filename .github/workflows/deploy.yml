@@ -51,5 +51,6 @@ jobs:
         run: |-
           gcloud run deploy users-api \
           --region us-central1 \
-          --image=us-central1-docker.pkg.dev/$PROJECT_ID/$REPO_NAME/$IMAGE_NAME:latest \
+          --image us-central1-docker.pkg.dev/$PROJECT_ID/$REPO_NAME/$IMAGE_NAME:latest \
+          --service-account conversia-gcp@jcvegab.iam.gserviceaccount.com \
           --quiet
